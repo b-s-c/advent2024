@@ -1,8 +1,4 @@
-reports = []
-
-with open('real.input') as input:
-    for line in input:
-        reports.append([int(l) for l in line.strip().split()])
+reports = [[int(l) for l in line.strip().split()] for line in open('real.input')]
 
 # 1 asc, 0 desc
 def check_pair_direction(val1, val2) -> bool:
