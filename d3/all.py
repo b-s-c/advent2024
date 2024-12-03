@@ -3,7 +3,7 @@ import math
 
 program = "".join([program.strip() for program in open('real.input')])
 
-def calc_mults(s) -> list[str]:
+def calc_mults(s) -> int:
     return sum(math.prod(map(int, tup)) for tup in re.findall(r'mul\((\d+),(\d+)\)', s))
 
 mults_p1 = calc_mults(program)
