@@ -3,13 +3,9 @@ grid_t = ["".join(line) for line in zip(*grid, strict=True)]
 grid_r = ["".join(reversed(line)) for line in grid]
 
 def get_diagonals(grid) -> list[str]:
-    temp_1 = []
-    for i in range(0, len(grid)):
-        temp_1.append((" "*i + grid[i])[:len(grid)])
+    temp_1 = [(" "*i + grid[i])[:len(grid)] for i in range(0, len(grid))]
     temp_1 = ["".join(line) for line in zip(*temp_1, strict=True)]
-    temp_2 = []
-    for i in range(0, len(grid)):
-        temp_2.append(grid[i][:i].rjust(len(grid))) #[i:])
+    temp_2 = [grid[i][:i].rjust(len(grid)) for i in range(0, len(grid))]
     temp_2 = ["".join(line) for line in zip(*temp_2, strict=True)]
     temp_1.extend(temp_2)
     return temp_1
