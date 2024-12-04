@@ -18,24 +18,10 @@ print(len(grid), len(grid[0]))
 
 count = 0
 
-for line in grid:
-    count += line.count("XMAS")
-    count += line.count("SAMX")
-    print(line, count)
-print(count)
-for line in grid_t:
-    count += line.count("XMAS")
-    count += line.count("SAMX")
-    print(line, count)
-print(count)
-for line in get_diagonals(grid):
-    count += line.count("XMAS")
-    count += line.count("SAMX")
-    print(line, count)
-print(count)
-for line in get_diagonals(grid_r):
-    count += line.count("XMAS")
-    count += line.count("SAMX")
-    print(line, count)
+for g in (grid, grid_t, get_diagonals(grid), get_diagonals(grid_r)):
+    for line in g:
+        count += line.count("XMAS")
+        count += line.count("SAMX")
+        print(line, count)
     
 print(count)
