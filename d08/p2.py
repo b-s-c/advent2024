@@ -1,6 +1,6 @@
 import itertools
 
-grid = [list(line.strip()) for line in open('real.input')]
+grid = [list(line.strip()) for line in open('test.input')]
 
 def print_grid():
     for i, row in enumerate(grid):
