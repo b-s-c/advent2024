@@ -86,7 +86,29 @@ def flood_fill(garden, start_coords, symbol):
         current_edge = set()
         valid = True
         for i in range(0, len(vals)-1):
-            print("current_edge", current_edge)
+            #print("current_edge", current_edge)
+            if vals[i] + 1 == vals[i+1]:
+                current_edge.add(vals[i])
+                current_edge.add(vals[i+1])
+                continue
+            else:
+                valid = False
+                if len(current_edge) >= 3:
+                    edge_count += 1
+                    current_edge.clear()
+        
+        if edge_count == 0 and valid:
+            total_edge_count += 1
+        total_edge_count += edge_count
+
+    for k in edges_vertical.keys():
+        edges_vertical[k] = sorted(edges_vertical[k]) #unnecessary but whatever
+        vals = edges_vertical[k]
+        edge_count = 0
+        current_edge = set()
+        valid = True
+        for i in range(0, len(vals)-1):
+            #print("current_edge", current_edge)
             if vals[i] + 1 == vals[i+1]:
                 current_edge.add(vals[i])
                 current_edge.add(vals[i+1])
