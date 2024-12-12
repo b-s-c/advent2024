@@ -64,9 +64,45 @@ def flood_fill(garden, start_coords, symbol):
                 else:
                     edges[coords[0]] = [coords[1]]
     
-    print("edges", edges, len(edges))
-    print("neighbours", neighbours)
+    
+    print("edges:", edges)
+    
+    edges_vertical = {}
+    for k in edges.keys():
+        lst = edges[k]
+        for item in lst:
+            if item in edges_vertical:
+                edges_vertical[item].append(k)
+            else:
+                edges_vertical[item] = [k]
 
+    print("edges vertical:", edges_vertical)
+
+    total_edge_count = 0
+    for k in edges.keys():
+        edges[k] = sorted(edges[k]) #unnecessary but whatever
+        vals = edges[k]
+        edge_count = 0
+        current_edge = set()
+        valid = True
+        for i in range(0, len(vals)-1):
+            print("current_edge", current_edge)
+            if vals[i] + 1 == vals[i+1]:
+                current_edge.add(vals[i])
+                current_edge.add(vals[i+1])
+                continue
+            else:
+                valid = False
+                if len(current_edge) >= 3:
+                    edge_count += 1
+                    current_edge.clear()
+        
+        if edge_count == 0 and valid:
+            total_edge_count += 1
+        total_edge_count += edge_count
+
+    print("total edges:", total_edge_count)
+        
     return result, perimeter
 
 checked = set()
@@ -80,7 +116,7 @@ while len(checked) < len(garden_3x)*len(garden_3x[0]):
     checked = checked.union(this_coords)
     print(this_coords)
     #print("checked", checked)
-    print(symbol, "result", len(this_coords), "*", perimeter, "=", len(this_coords) * perimeter)
+    print(symbol, "result", len(this_coords), len(this_coords) // 9, "*", perimeter, "=", len(this_coords) * perimeter)
     p1_total+=len(this_coords)*perimeter
     
 print(p1_total)
