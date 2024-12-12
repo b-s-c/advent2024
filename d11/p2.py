@@ -1,3 +1,5 @@
+from functools import cache
+
 stones = tuple(map(int, open('big.input').readline().strip().split(' ')))
 
 def evolve(stone):
@@ -13,17 +15,16 @@ def evolve(stone):
 
 seen = dict()
 
+@cache
 def evolve_recur(stone, n):
-    if stone in seen:
-        if n in seen[stone]:
-            return seen[stone][n]
-    else:
-        seen[stone] = dict()
     if n <= 1:
-        seen[stone][n] = sum(len(evolve(s)) for s in stone)
-        return seen[stone][n]
+        return sum(len(evolve(s)) for s in stone)
     else:
-        seen[stone][n] = sum(evolve_recur(evolve(s), n - 1) for s in stone)
-        return seen[stone][n]
+        return sum(evolve_recur(evolve(s), n - 1) for s in stone)
 
-print(evolve_recur(stones, 75))
+if __name__ == '__main__':
+    import time
+    start = time.perf_counter()
+    print(evolve_recur(stones, 75))
+    end = time.perf_counter()
+    print(end-start)

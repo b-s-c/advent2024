@@ -1,4 +1,4 @@
-garden_og = [list(line.strip()) for line in open('test2.input')]
+garden_og = [list(line.strip()) for line in open('real.input')]
 
 garden_3x = []
 for row in garden_og:
@@ -27,6 +27,23 @@ def get_starting_point(garden, checked):
             if (i, j) not in checked:
                 return ((i, j), garden[i][j])
     return False
+
+def find_consecutive_strings(lst):
+    total = 0
+    in_string = False
+    for i in range (0, len(lst) - 1):
+        if lst[i] + 1 == lst[i+1]:
+            in_string = True
+            continue
+        else:
+            if in_string:
+                total += 1
+            in_string = False
+    if in_string:
+        total += 1
+    return total
+
+
 
 def flood_fill(garden, start_coords, symbol):
     result = set()
@@ -63,10 +80,10 @@ def flood_fill(garden, start_coords, symbol):
                     edges[coords[0]].append(coords[1])
                 else:
                     edges[coords[0]] = [coords[1]]
-    
-    
+
+
     print("edges:", edges)
-    
+
     edges_vertical = {}
     for k in edges.keys():
         lst = edges[k]
@@ -82,23 +99,11 @@ def flood_fill(garden, start_coords, symbol):
     for k in edges.keys():
         edges[k] = sorted(edges[k]) #unnecessary but whatever
         vals = edges[k]
-        edge_count = 0
         current_edge = set()
         valid = True
-        for i in range(0, len(vals)-1):
-            #print("current_edge", current_edge)
-            if vals[i] + 1 == vals[i+1]:
-                current_edge.add(vals[i])
-                current_edge.add(vals[i+1])
-                continue
-            else:
-                valid = False
-                if len(current_edge) >= 3:
-                    edge_count += 1
-                    current_edge.clear()
-        
-        if edge_count == 0 and valid:
-            total_edge_count += 1
+        edge_count = find_consecutive_strings(vals)
+
+
         total_edge_count += edge_count
 
     for k in edges_vertical.keys():
@@ -107,38 +112,27 @@ def flood_fill(garden, start_coords, symbol):
         edge_count = 0
         current_edge = set()
         valid = True
-        for i in range(0, len(vals)-1):
-            #print("current_edge", current_edge)
-            if vals[i] + 1 == vals[i+1]:
-                current_edge.add(vals[i])
-                current_edge.add(vals[i+1])
-                continue
-            else:
-                valid = False
-                if len(current_edge) >= 3:
-                    edge_count += 1
-                    current_edge.clear()
-        
-        if edge_count == 0 and valid:
-            total_edge_count += 1
+        edge_count = find_consecutive_strings(vals)
+
+
         total_edge_count += edge_count
 
     print("total edges:", total_edge_count)
-        
-    return result, perimeter
+
+    return result, total_edge_count
 
 checked = set()
 
-p1_total = 0
+p2_total = 0
 
 while len(checked) < len(garden_3x)*len(garden_3x[0]):
     (start_i, start_j), symbol = get_starting_point(garden_3x, checked)
     #print("starting at", (start_i, start_j), "with symbol", symbol)
-    this_coords, perimeter = flood_fill(garden_3x, (start_i, start_j), symbol)
+    this_coords, edges = flood_fill(garden_3x, (start_i, start_j), symbol)
     checked = checked.union(this_coords)
     print(this_coords)
     #print("checked", checked)
-    print(symbol, "result", len(this_coords), len(this_coords) // 9, "*", perimeter, "=", len(this_coords) * perimeter)
-    p1_total+=len(this_coords)*perimeter
-    
-print(p1_total)
+    print(symbol, "result", len(this_coords) // 9, "*", edges, "=", (len(this_coords)//9) * edges)
+    p2_total+=((len(this_coords) // 9)*edges)
+
+print(p2_total)
